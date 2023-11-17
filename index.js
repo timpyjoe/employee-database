@@ -1,5 +1,5 @@
 const inquirer = require("inquirer");
-const { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment } = require("./functions");
+const { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment, addRole } = require("./functions");
 
 
 // starts the program
@@ -26,7 +26,7 @@ function start() {
     } else if (action === "Add A Department"){
       addDepartment();
     } else if (action === "Add A Role"){
-
+      addRole();
     } else if (action === "Add An Employee"){
 
     } else if (action === "Update Employee"){

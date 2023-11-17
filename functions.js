@@ -51,4 +51,46 @@ function addDepartment() {
 })
 }
 
-module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment }
+function addRole() {
+  //stores all current departments in an array
+  let currentDepts = [];
+  db.query("SELECT name FROM departments", (err, result) => {
+    result.forEach((department => {
+      currentDepts.push(department.title);
+    }))
+  })
+  // prompts user for information about the new role
+  inquirer.prompt(
+    {
+      type: "input",
+      message: "Please enter a new role",
+      name:  "newRole"
+    },
+    {
+      type: "imput",
+      message: "Please enter a salary for the role",
+      name: "newSalary"
+    },
+    {
+      type: "list",
+      message: "Which department does the role belong to?",
+      name: "deptOwned",
+      choices: currentDepts
+    }
+  ).then((responses) => {
+    const { newDept, newSalary, deptOwned } = responses;
+  //adds the new role to the database
+  db.query("INSERT INTO roles (title, salary, department_id) VALUES (?)", [newDept, newSalary, (currentDepts[deptOwned]+1)], (err, results) => {
+    if (err){
+      console.log(err);
+    } else {
+      console.log("Role successfully added!");
+    }
+  })
+})
+}
+module.exports = {viewAllDepartments, 
+                  viewAllRoles, 
+                  viewAllEmployees, 
+                  addDepartment,
+                  addRole }
