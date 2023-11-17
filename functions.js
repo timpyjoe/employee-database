@@ -1,4 +1,5 @@
 const { db } = require("./config/connections");
+const inquirer = require("inquirer");
 
 
 // Returns a table from the db of all departments
@@ -31,4 +32,23 @@ function viewAllEmployees() {
   });
 }
 
-module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees }
+function addDepartment() {
+  inquirer.prompt(
+    {
+      type: "input",
+      message: "Please enter a new department",
+      name:  "newDept"
+    }
+  ).then((responses) => {
+    const { newDept } = responses;
+  db.query("INSERT INTO departments (name) VALUES (?)", newDept, (err, results) => {
+    if (err){
+      console.log(err);
+    } else {
+      console.log("Department successfully added!");
+    }
+  })
+})
+}
+
+module.exports = { viewAllDepartments, viewAllRoles, viewAllEmployees, addDepartment }
