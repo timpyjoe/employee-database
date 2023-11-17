@@ -13,3 +13,4 @@ const db = mysql.createConnection(
   },
   console.log(`Connected to the classlist_db database.`)
 );
+
