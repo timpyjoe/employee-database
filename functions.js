@@ -98,7 +98,7 @@ function addEmployee() {
       currentRoles.push(role.title);
     }))
   })
-  // prompts user for information about the new role
+  // prompts user for information about the new employee
   inquirer.prompt(
     {
       type: "input",
@@ -123,7 +123,7 @@ function addEmployee() {
     }
   ).then((responses) => {
     const { firstName, lastName, newRole, managerID } = responses;
-  //adds the new role to the database
+  //adds the new employee to the database
   db.query("INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [firstName, lastName, (currentRoles[newRole]+1), managerID], (err, results) => {
     if (err){
       console.log(err);
