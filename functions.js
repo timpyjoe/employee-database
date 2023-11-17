@@ -56,7 +56,7 @@ function addRole() {
   let currentDepts = [];
   db.query("SELECT name FROM departments", (err, result) => {
     result.forEach((department => {
-      currentDepts.push(department.title);
+      currentDepts.push(department.name);
     }))
   })
   // prompts user for information about the new role
@@ -80,7 +80,7 @@ function addRole() {
   ).then((responses) => {
     const { newDept, newSalary, deptOwned } = responses;
   //adds the new role to the database
-  db.query("INSERT INTO roles (title, salary, department_id) VALUES (?)", [newDept, newSalary, (currentDepts[deptOwned]+1)], (err, results) => {
+  db.query("INSERT INTO roles (title, salary, department_id) VALUES (?, ?, ?)", [newDept, newSalary, (currentDepts[deptOwned]+1)], (err, results) => {
     if (err){
       console.log(err);
     } else {
@@ -89,8 +89,56 @@ function addRole() {
   })
 })
 }
+
+function addEmployee() {
+  //stores all current roles in an array
+  let currentRoles = [];
+  db.query("SELECT title FROM roles", (err, result) => {
+    result.forEach((role => {
+      currentRoles.push(role.title);
+    }))
+  })
+  // prompts user for information about the new role
+  inquirer.prompt(
+    {
+      type: "input",
+      message: "Please enter employee first name",
+      name:  "firstName"
+    },
+    {
+      type: "imput",
+      message: "Please enter employee last name",
+      name: "lastName"
+    },
+    {
+      type: "list",
+      message: "Which role does this employee have?",
+      name: "newRole",
+      choices: currentRoles
+    },
+    {
+      type: "input",
+      message: "Please enter their manager ID (leave blank for NULL)",
+      name: "managerID"
+    }
+  ).then((responses) => {
+    const { firstName, lastName, newRole, managerID } = responses;
+  //adds the new role to the database
+  db.query("INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [firstName, lastName, (currentRoles[newRole]+1), managerID], (err, results) => {
+    if (err){
+      console.log(err);
+    } else {
+      console.log("Employee successfully added!");
+    }
+  })
+})
+}
+
+
+
 module.exports = {viewAllDepartments, 
                   viewAllRoles, 
                   viewAllEmployees, 
                   addDepartment,
-                  addRole }
+                  addRole,
+                  addEmployee }
