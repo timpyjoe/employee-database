@@ -1,19 +1,6 @@
 const inquirer = require("inquirer");
-const mysql = require("mysql2");
 const { viewAllDepartments, viewAllRoles, viewAllEmployees } = require("./functions");
 
-
-const db = mysql.createConnection(
-  {
-    host: 'localhost',
-    // MySQL username,
-    user: 'root',
-    // MySQL password
-    password: 'MYSQLPassword',
-    database: 'employee_db'
-  },
-  console.log(`Connected to the employee_db database.`)
-);
 
 // starts the program
 function start() {
@@ -23,19 +10,19 @@ function start() {
       type: "list",
       message: "What would you like to do?",
       name: "action",
-      choices: ["View Departments Database", "View Roles Database", "View Employees Database"]
+      choices: ["View All Departments", "View All Roles", "View All Employees"]
     }
   ).then((responses) => {
     //pulls the choice from "action" out as variable
     const { action } = responses
-    if (action === "View Departments Database"){
+    if (action === "View All Departments"){
       viewAllDepartments();
       start();
-    } else if (action === "View Roles Database"){
+    } else if (action === "View All Roles"){
       viewAllRoles();
-    } else if (action === "View Employees Database"){
+    } else if (action === "View All Employees"){
       viewAllEmployees();
-      
+
     }
     // start();
   })

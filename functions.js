@@ -1,19 +1,7 @@
-const mysql = require("mysql2");
-
-const db = mysql.createConnection(
-  {
-    host: 'localhost',
-    // MySQL username,
-    user: 'root',
-    // MySQL password
-    password: 'MYSQLPassword',
-    database: 'employee_db'
-  }
-);
+const { db } = require("./config/connections");
 
 
-
-
+// Returns a table from the db of all departments
 function viewAllDepartments() {
   db.query('SELECT * FROM departments', (err, results) => {
     if (err){
@@ -23,6 +11,7 @@ function viewAllDepartments() {
   });
 }
 
+// Returns a table from the db of all roles
 function viewAllRoles() {
   db.query('SELECT * FROM roles', (err, results) => {
     if (err){
@@ -32,6 +21,7 @@ function viewAllRoles() {
   });
 }
 
+// Returns a table from the db of all employees
 function viewAllEmployees() {
   db.query('SELECT * FROM employees', (err, results) => {
     if (err){
