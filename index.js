@@ -132,7 +132,7 @@ function addEmployee() {
     }]
   ).then((responses) => {
     const { firstName, lastName, newRole, managerID } = responses;
-    console.log(newRole, managerID);
+    // console.log(newRole, managerID);
   //adds the new employee to the database
   db.query("INSERT INTO employees (first_name, last_name, role_id, manager_id) VALUES (?, ?, ?, ?)", [firstName, lastName, newRole, managerID], (err, results) => {
     if (err){
@@ -180,6 +180,20 @@ function updateEmployee() {
   start();
 }
 
+function viewPayroll() {
+  db.query('SELECT SUM(roles.salary) AS "Annual Payroll", COUNT(employees.id) AS "# of Employees" FROM employees INNER JOIN roles ON employees.role_id=roles.id', (err, results) => {
+    if (err){
+      console.log(err)
+    } else {
+      console.log(`
+      
+      `);
+      console.table(results);
+    }
+  })
+  start();
+}
+
 // starts the program
 function start() {
   //asks what their initial choice is
@@ -188,7 +202,7 @@ function start() {
       type: "list",
       message: "What would you like to do?",
       name: "action",
-      choices: ["View All Departments", "View All Roles", "View All Employees", "Add A Department", "Add A Role", "Add An Employee", "Update Employee Role"]
+      choices: ["View All Departments", "View All Roles", "View All Employees", "Add A Department", "Add A Role", "Add An Employee", "Update Employee Role", "View Total Payroll"]
     }
   ).then((responses) => {
     //pulls the choice from "action" out as variable
@@ -209,6 +223,8 @@ function start() {
       addEmployee();
     } else if (action === "Update Employee Role"){
       updateEmployee();
+    } else if (action === "View Total Payroll"){
+      viewPayroll();
     }
   })
 
