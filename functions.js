@@ -1,6 +1,6 @@
 const { db } = require("./config/connections");
 const inquirer = require("inquirer");
-
+const {startApp} = require("./index")
 
 // Returns a table from the db of all departments
 function viewAllDepartments() {
@@ -8,7 +8,12 @@ function viewAllDepartments() {
     if (err){
       console.log(err);
     }
+    console.log( `
+    
+    
+    `)
     console.table(results)
+    startApp();
   });
 }
 
